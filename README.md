@@ -1,8 +1,8 @@
-# Insights_Agent
+# Teacher Intelligence Agent
 
 ## Overview
 
-The Tutoring Insights Agent is a Retrieval-Augmented Generation (RAG) system built to analyze tutoring transcripts and automatically generate actionable learning insights about students — their understanding, misconceptions, emotional tone, and next learning steps.
+The Teacher Intelligence Agent is a Retrieval-Augmented Generation (RAG) system built to analyze tutoring transcripts and automatically generate actionable learning insights about students — their understanding, misconceptions, emotional tone, and next learning steps.
 
 It combines:
 
