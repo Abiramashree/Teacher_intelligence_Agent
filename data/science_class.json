@@ -1,0 +1,82 @@
+[
+    {
+        "role": "willy",
+        "text": "Hi.\n",
+        "timestamp": "2025-06-03T09:02:11.103Z"
+    },
+    {
+        "role": "assistant",
+        "text": "Hey there! Welcome to today's science tutoring session! Today, we’re going to learn about the states of matter. Would you like me to start by explaining what they are?",
+        "timestamp": "2025-06-03T09:02:12.972Z"
+    },
+    {
+        "role": "willy",
+        "text": "Yes, please.\n",
+        "timestamp": "2025-06-03T09:02:20.543Z"
+    },
+    {
+        "role": "assistant",
+        "text": "Great! Matter is anything that takes up space and has mass. There are three main states of matter: solid, liquid, and gas.\n\nLet's begin with Step 1.\n\nFirst question: Can you name one example of a solid?",
+        "timestamp": "2025-06-03T09:02:25.682Z"
+    },
+    {
+        "role": "willy",
+        "text": "A rock.\n",
+        "timestamp": "2025-06-03T09:02:34.905Z"
+    },
+    {
+        "role": "assistant",
+        "text": "Perfect! A rock is a solid because it has a definite shape and volume.\n\nNow, Step 2.\n\nCan you think of an example of a liquid?",
+        "timestamp": "2025-06-03T09:02:38.751Z"
+    },
+    {
+        "role": "willy",
+        "text": "Water.\n",
+        "timestamp": "2025-06-03T09:02:47.164Z"
+    },
+    {
+        "role": "assistant",
+        "text": "That’s absolutely right! Water is a liquid — it takes the shape of its container but keeps the same volume.\n\nNow let’s move to Step 3.\n\nWhat about a gas? Can you name one?",
+        "timestamp": "2025-06-03T09:02:50.912Z"
+    },
+    {
+        "role": "willy",
+        "text": "Air?\n",
+        "timestamp": "2025-06-03T09:03:00.232Z"
+    },
+    {
+        "role": "assistant",
+        "text": "Exactly! Air is a gas. Gases spread out and fill the entire space available.\n\nNow, Step 4.\n\nQuestion: What happens to water when we heat it up?",
+        "timestamp": "2025-06-03T09:03:03.981Z"
+    },
+    {
+        "role": "willy",
+        "text": "It turns into vapor.\n",
+        "timestamp": "2025-06-03T09:03:16.777Z"
+    },
+    {
+        "role": "assistant",
+        "text": "That’s correct! When water is heated, it changes from a liquid to a gas — this process is called evaporation.\n\nNow, Step 5.\n\nWhat happens when we cool water vapor down?",
+        "timestamp": "2025-06-03T09:03:20.652Z"
+    },
+    {
+        "role": "willy",
+        "text": "It becomes water again.\n",
+        "timestamp": "2025-06-03T09:03:33.422Z"
+    },
+    {
+        "role": "assistant",
+        "text": "Perfect answer! When water vapor cools, it turns back into liquid water — that process is called condensation.\n\nNow for our final step.\n\nStep 6: Can you tell me what process changes liquid water into ice?",
+        "timestamp": "2025-06-03T09:03:36.580Z"
+    },
+    {
+        "role": "willy",
+        "text": "Freezing.\n",
+        "timestamp": "2025-06-03T09:03:48.918Z"
+    },
+    {
+        "role": "assistant",
+        "text": "Exactly! Freezing changes a liquid into a solid.\n\nGreat job! You’ve learned about all three states of matter and how they change — solid, liquid, and gas. You did amazing today!",
+        "timestamp": "2025-06-03T09:03:52.333Z"
+    }
+]
