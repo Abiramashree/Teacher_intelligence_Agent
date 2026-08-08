@@ -18,17 +18,17 @@ This project demonstrates how AI can empower tutors, educators, and learning pla
 
 ## Features
 
-✅ RAG + FAISS Vector Store — Retrieve relevant transcript chunks from large tutoring logs
+RAG + FAISS Vector Store — Retrieve relevant transcript chunks from large tutoring logs
 
-✅ EmbeddingPipeline — SentenceTransformer-based text chunking and embeddings
+EmbeddingPipeline — SentenceTransformer-based text chunking and embeddings
 
-✅ Groq LLM Summarization — Generates faithful, concise learning summaries
+Groq LLM Summarization — Generates faithful, concise learning summaries
 
-✅ Insights Agent — Multi-tool agent using LangChain Tools and OpenAI
+Insights Agent — Multi-tool agent using LangChain Tools and OpenAI
 
-✅ Automatic PDF Reports — Creates structured “Student Insights” reports for educators
+Automatic PDF Reports — Creates structured “Student Insights” reports for educators
 
-✅ Fully Modular — Plug-and-play architecture for any domain (education, customer support, etc.)
+Fully Modular — Plug-and-play architecture for any domain (education, customer support, etc.)
 
 ## Tech Stack
 
