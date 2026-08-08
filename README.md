@@ -1,102 +1,116 @@
-# Teacher Intelligence Agent
+# 🧑‍🏫 Teacher Intelligence Agent
 
-## Overview
+A Retrieval-Augmented Generation (RAG) system that reads student-tutor transcripts and
+turns them into structured, actionable insights — understanding level, misconceptions,
+sentiment, suggested next steps — with an optional one-click PDF report for educators.
 
-The Teacher Intelligence Agent is a Retrieval-Augmented Generation (RAG) system built to analyze tutoring transcripts and automatically generate actionable learning insights about students — their understanding, misconceptions, emotional tone, and next learning steps.
+**[Live demo →](#)** *(add your Streamlit Cloud / Hugging Face Space link here once deployed)*
 
-It combines:
+---
 
-🧠 Semantic retrieval using FAISS vector search
+## What it does
 
-💬 Groq LLM (Llama 3) for contextual summarization
+Given a folder of tutoring session transcripts, the agent can answer questions like:
 
-🧩 LangChain Tools for reasoning and automation
+> *"Did the student understand the three states of matter? What should the tutor do next?"*
 
-📄 Automated PDF report generation for educators
+...and return either a quick semantic-search summary, or a full structured report covering:
 
-This project demonstrates how AI can empower tutors, educators, and learning platforms to better understand learners and personalize instruction — all powered by a custom-built, transparent RAG pipeline.
+- Topics covered & knowledge gaps
+- Misconceptions identified
+- Student sentiment & confidence
+- Bloom's taxonomy level
+- Suggested follow-up questions and activities
+- A downloadable PDF report
 
-## Features
+## Architecture
 
-RAG + FAISS Vector Store — Retrieve relevant transcript chunks from large tutoring logs
+```
+Transcripts (JSON)
+      │
+      ▼
+Chunking (LangChain RecursiveCharacterTextSplitter)
+      │
+      ▼
+Embeddings (SentenceTransformers: all-MiniLM-L6-v2)
+      │
+      ▼
+FAISS vector index  ──────────────┐
+      │                            │
+      ▼                            ▼
+RAGSearch (Groq Llama 3.1)   LangChain Agent (OpenAI gpt-4o-mini)
+  quick summaries                tool-calling: rag_search → structured
+                                  Pydantic insights → save_tutoring_insights_pdf
+```
 
-EmbeddingPipeline — SentenceTransformer-based text chunking and embeddings
+The agent is a real **tool-calling LangChain agent**, not a fixed pipeline: it decides
+when to call `rag_search` to ground itself in transcript evidence, and when to call
+`save_tutoring_insights_pdf` to export a report — both implemented as LangChain `@tool`s.
 
-Groq LLM Summarization — Generates faithful, concise learning summaries
+## Tech stack
 
-Insights Agent — Multi-tool agent using LangChain Tools and OpenAI
+| Layer | Tools |
+|---|---|
+| Embeddings | SentenceTransformers (`all-MiniLM-L6-v2`) |
+| Vector store | FAISS |
+| LLMs | Groq (`llama-3.1-8b-instant`) for retrieval summaries, OpenAI (`gpt-4o-mini`) for the structured agent |
+| Orchestration | LangChain (tools, agents, prompt templates) |
+| Structured output | Pydantic |
+| Report generation | ReportLab (PDF) |
+| UI | Streamlit |
 
-Automatic PDF Reports — Creates structured “Student Insights” reports for educators
+## Project structure
 
-Fully Modular — Plug-and-play architecture for any domain (education, customer support, etc.)
+```
+├── app.py              # Streamlit UI (entry point)
+├── rag_engine.py        # Chunking, embeddings, FAISS store, RAG summarization
+├── agent.py              # Structured insights schema, tools, agent executor
+├── data/                 # Sample anonymized tutoring transcripts (JSON)
+├── requirements.txt
+├── .env.example
+└── rag_faiss_pipeline.ipynb   # Original exploratory notebook
+```
 
-## Tech Stack
+## Run it locally
 
-Python (LangChain, FAISS, SentenceTransformers)
-
-LLMs: Groq (llama-3.1-8b-instant), OpenAI (gpt-4o-mini)
-
-Libraries: LangChain, LangChain-Groq, ReportLab, dotenv, Pydantic
-
-Tools: RAG Search + PDF Generator (custom LangChain Tools)
-
-Storage: FAISS Vector Store
-
-## Key Components
-### Data Injestion and Embedding Pipeline
-
-Splits documents into contextual chunks and embeds them using SentenceTransformer.
-
-### FaissVectorStore
-
-Stores and retrieves embeddings efficiently for semantic search.
-
-### RAGSearch
-
-Retrieves top chunks and summarizes with a Groq LLM.
-
-### TutoringInsightsAgent
-
-A tool-using LangChain agent that: Analyzes transcripts for understanding, misconceptions, and sentiment. Suggests targeted learning actions. Optionally exports insights as a PDF report
-
-
-### Output (sample PDF fields):
-
-Topics covered
-
-Student understanding: medium
-
-Misconceptions: Confused between heat and temperature
-
-Suggested activities: Interactive simulations, real-life examples
-
-Sentiment: Neutral
-
-Confidence: 0.6
-
-Bloom’s Level: Understand
-
-
-## Use Cases
-
-EdTech Platforms: Personalized learning analytics
-
-Tutors & Teachers: Track student progress automatically
-
-Learning Analytics Research: Evaluate engagement & comprehension trends
-
-Student Support Teams: Identify confusion early
-
-## Getting Started
-git clone
-
-cd tutoring-insights-agent
-
+```bash
+git clone https://github.com/Abiramashree/Teacher_intelligence_Agent.git
+cd Teacher_intelligence_Agent
 pip install -r requirements.txt
+cp .env.example .env   # then fill in your GROQ_API_KEY and OPENAI_API_KEY
+streamlit run app.py
+```
 
+Open the local URL Streamlit prints (usually `http://localhost:8501`), enter your API
+keys in the sidebar, and try a query against the included sample transcripts.
 
-## Set your environment variables:
+## Deploy it for free (Streamlit Community Cloud)
 
-OPENAI_API_KEY=your_openai_key
+1. Push this repo to GitHub (public repo works fine on the free tier).
+2. Go to [share.streamlit.io](https://share.streamlit.io) and sign in with GitHub.
+3. Click **New app**, select this repo, branch `main`, and set the main file to `app.py`.
+4. Under **Advanced settings → Secrets**, add:
+   ```
+   GROQ_API_KEY = "your_groq_key"
+   OPENAI_API_KEY = "your_openai_key"
+   ```
+5. Click **Deploy**. You'll get a public URL like `https://your-app.streamlit.app`.
 
-GROQ_API_KEY=your_groq_key
+Free API keys: [Groq Console](https://console.groq.com/keys) and
+[OpenAI Platform](https://platform.openai.com/api-keys) (OpenAI requires a small prepaid
+balance; Groq's free tier is enough to run the demo end-to-end).
+
+## Use cases
+
+- **EdTech platforms** — personalized learning analytics at scale
+- **Tutors & teachers** — automatic progress tracking across sessions
+- **Learning analytics research** — engagement & comprehension trend analysis
+- **Student support teams** — early identification of confusion or disengagement
+
+## Notes
+
+- Sample data in `data/` is small, anonymized, and included only to demo the pipeline —
+  swap in your own transcripts (same `role`/`text`/`timestamp` JSON shape) to try it on
+  real sessions.
+- The FAISS index is rebuilt automatically the first time you run the app if `faiss_store/`
+  doesn't already exist.
