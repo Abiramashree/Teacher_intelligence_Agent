@@ -5,6 +5,9 @@ Streamlit UI for the Teacher Intelligence Agent.
 Lets an educator pick a tutoring transcript, ask a question about the student's
 understanding, and get back structured insights (+ an optional downloadable PDF).
 
+This is a public live demo: the GROQ_API_KEY is configured once by the app owner
+(via Streamlit secrets / env var), so visitors don't need a key of their own.
+
 Run locally:   streamlit run app.py
 Deploy free:   https://share.streamlit.io  (see README for step-by-step instructions)
 """
@@ -14,17 +17,29 @@ import streamlit as st
 
 st.set_page_config(page_title="Teacher Intelligence Agent", page_icon="🧑‍🏫", layout="centered")
 
+
+def _get_groq_key() -> str:
+    """Resolves the shared demo Groq key from the environment or Streamlit secrets,
+    so visitors never have to supply their own."""
+    key = os.getenv("GROQ_API_KEY", "")
+    if not key:
+        try:
+            key = st.secrets.get("GROQ_API_KEY", "")
+        except Exception:
+            key = ""
+    return key
+
+
+groq_key = _get_groq_key()
+if groq_key:
+    os.environ["GROQ_API_KEY"] = groq_key
+
 st.title("🧑‍🏫 Teacher Intelligence Agent")
 st.caption("RAG + an LLM tool-using agent that turns tutoring transcripts into actionable student insights.")
 
 with st.sidebar:
-    st.header("Setup")
-    groq_key = st.text_input("GROQ_API_KEY", type="password", value=os.getenv("GROQ_API_KEY", ""))
-    openai_key = st.text_input("OPENAI_API_KEY", type="password", value=os.getenv("OPENAI_API_KEY", ""))
-    st.caption("Keys are only used for this session and are never stored.")
-    st.divider()
+    st.header("How it works")
     st.markdown(
-        "**How it works**\n"
         "1. Transcripts are chunked & embedded (SentenceTransformers)\n"
         "2. Stored in a FAISS vector index\n"
         "3. A LangChain agent retrieves relevant chunks (`rag_search` tool) "
@@ -32,11 +47,8 @@ with st.sidebar:
         "4. Insights are returned in a structured schema, with an optional "
         "PDF export tool"
     )
-
-if groq_key:
-    os.environ["GROQ_API_KEY"] = groq_key
-if openai_key:
-    os.environ["OPENAI_API_KEY"] = openai_key
+    st.divider()
+    st.caption("This is a shared live demo — no API key needed to try it.")
 
 query = st.text_area(
     "Ask about a student's session",
@@ -48,8 +60,11 @@ col1, col2 = st.columns(2)
 run_search = col1.button("🔍 Quick RAG summary", use_container_width=True)
 run_agent = col2.button("🧠 Full structured insights + PDF", use_container_width=True)
 
-if (run_search or run_agent) and not (groq_key and (run_search or (run_agent and openai_key))):
-    st.warning("Add your GROQ_API_KEY (and OPENAI_API_KEY for full insights) in the sidebar first.")
+if (run_search or run_agent) and not groq_key:
+    st.error(
+        "This demo isn't configured yet: the app owner needs to set GROQ_API_KEY "
+        "in Streamlit secrets (or the environment)."
+    )
 elif run_search and query:
     with st.spinner("Retrieving relevant transcript chunks and summarizing..."):
         from rag_engine import RAGSearch
