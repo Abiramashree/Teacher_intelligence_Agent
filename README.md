@@ -4,8 +4,6 @@ A Retrieval-Augmented Generation (RAG) system that reads student-tutor transcrip
 turns them into structured, actionable insights — understanding level, misconceptions,
 sentiment, suggested next steps — with an optional one-click PDF report for educators.
 
-**[Live demo →](#)** *(add your Streamlit Cloud / Hugging Face Space link here once deployed)*
-
 ---
 
 ## What it does
