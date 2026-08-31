@@ -22,8 +22,8 @@ try:
 except ImportError:
     from langchain.tools import tool
 
-from langchain_openai import ChatOpenAI
-from langchain.agents import create_openai_tools_agent, AgentExecutor
+from langchain_groq import ChatGroq
+from langchain.agents import create_tool_calling_agent, AgentExecutor
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import PydanticOutputParser
 
@@ -143,8 +143,8 @@ def save_tutoring_insights_pdf(payload: str) -> str:
 
 
 def build_agent_executor() -> AgentExecutor:
-    """Builds the OpenAI tools agent: it calls rag_search to ground itself in real transcript
-    context, then optionally calls save_tutoring_insights_pdf to export a report."""
+    """Builds the tool-calling agent (Groq-hosted LLM): it calls rag_search to ground itself in
+    real transcript context, then optionally calls save_tutoring_insights_pdf to export a report."""
     parser = PydanticOutputParser(pydantic_object=TutoringInsights)
     agent_system_prompt = (
         DEFAULT_SYSTEM_PROMPT
@@ -161,8 +161,8 @@ def build_agent_executor() -> AgentExecutor:
         ("placeholder", "{agent_scratchpad}"),
     ]).partial(format_instructions=parser.get_format_instructions())
 
-    llm = ChatOpenAI(model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
-                      openai_api_key=os.getenv("OPENAI_API_KEY"), temperature=0)
+    llm = ChatGroq(model=os.getenv("GROQ_AGENT_MODEL", "llama-3.3-70b-versatile"),
+                   groq_api_key=os.getenv("GROQ_API_KEY"), temperature=0)
     tools = [rag_search, save_tutoring_insights_pdf]
-    agent = create_openai_tools_agent(llm=llm, tools=tools, prompt=prompt)
+    agent = create_tool_calling_agent(llm=llm, tools=tools, prompt=prompt)
     return AgentExecutor(agent=agent, tools=tools, verbose=True)
