@@ -69,40 +69,6 @@ when to call `rag_search` to ground itself in transcript evidence, and when to c
 └── rag_faiss_pipeline.ipynb   # Original exploratory notebook
 ```
 
-## Run it locally
-
-```bash
-git clone https://github.com/Abiramashree/Teacher_intelligence_Agent.git
-cd Teacher_intelligence_Agent
-pip install -r requirements.txt
-cp .env.example .env   # then fill in your GROQ_API_KEY
-streamlit run app.py
-```
-
-Open the local URL Streamlit prints (usually `http://localhost:8501`) and try a query
-against the included sample transcripts.
-
-## Deploy it for free (Streamlit Community Cloud)
-
-This app is set up as a **shared live demo**: you (the owner) configure one `GROQ_API_KEY`
-and every visitor uses the app without entering a key of their own.
-
-1. Push this repo to GitHub (public repo works fine on the free tier).
-2. Go to [share.streamlit.io](https://share.streamlit.io) and sign in with GitHub.
-3. Click **New app**, select this repo, branch `main`, and set the main file to `app.py`.
-4. Under **Advanced settings → Secrets**, add:
-   ```
-   GROQ_API_KEY = "your_groq_key"
-   ```
-5. Click **Deploy**. You'll get a public URL like `https://your-app.streamlit.app`.
-
-Free API key: [Groq Console](https://console.groq.com/keys).
-
-> **Note:** since every visitor's request runs on your one key, a busy demo can burn
-> through Groq's free-tier rate limits. If that happens, requests will start failing
-> until the limit resets — consider adding your own request cap or a Groq paid tier if
-> you expect real traffic.
-
 ## Use cases
 
 - **EdTech platforms** — personalized learning analytics at scale
